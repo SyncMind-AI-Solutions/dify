@@ -14,6 +14,15 @@ Published images (x86 only):
 - `crpi-2e30x3ttfmqmx83q.cn-chengdu.personal.cr.aliyuncs.com/dify-vision/dify-api:latest`
 - `crpi-2e30x3ttfmqmx83q.cn-chengdu.personal.cr.aliyuncs.com/dify-vision/dify-web:latest`
 
+Mirrored upstream images used by `docker/docker-compose.yaml` (so ECS does not need `docker.io`) are pushed under:
+
+- `crpi-2e30x3ttfmqmx83q.cn-chengdu.personal.cr.aliyuncs.com/dify-vision/<original_repo>:<original_tag>`
+
+Example:
+
+- `redis:6-alpine` -> `crpi-2e30x3ttfmqmx83q.cn-chengdu.personal.cr.aliyuncs.com/dify-vision/redis:6-alpine`
+- `ubuntu/squid:latest` -> `crpi-2e30x3ttfmqmx83q.cn-chengdu.personal.cr.aliyuncs.com/dify-vision/ubuntu/squid:latest`
+
 ### GitHub Actions
 
 Workflow: `.github/workflows/syncmind-push-acr.yml`
@@ -39,4 +48,10 @@ docker login crpi-2e30x3ttfmqmx83q.cn-chengdu.personal.cr.aliyuncs.com
 
 ```sh
 ./syncmind/scripts/push-acr-latest.sh
+```
+
+3) Mirror all compose dependency images to ACR:
+
+```sh
+./syncmind/scripts/mirror-compose-images.sh
 ```
