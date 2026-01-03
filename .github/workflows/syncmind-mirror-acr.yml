@@ -8,13 +8,9 @@ on:
         required: false
         default: ""
       method:
-        description: "Copy method (skopeo uses less disk; docker uses docker pull/tag/push)"
+        description: "Copy method: skopeo (less disk) or docker (pull/tag/push)"
         required: false
         default: "skopeo"
-        type: choice
-        options:
-          - skopeo
-          - docker
 
 permissions:
   contents: read
@@ -61,10 +57,11 @@ jobs:
         run: |
           chmod +x syncmind/scripts/list-compose-images.sh syncmind/scripts/mirror-compose-images.sh
 
-          images_input='${{ inputs.images }}'
-          if [[ -n "$images_input" ]]; then
-            # Accept comma-separated or newline-separated lists.
-            images_input="${images_input//,/\n}"
+          # Accept comma-separated or newline-separated lists.
+          # Normalize into real newline-separated entries.
+          images_input="${{ inputs.images }}"
+          if [[ -n "${images_input//[[:space:]]/}" ]]; then
+            images_input="$(printf '%s' "$images_input" | tr ',' '\n' | tr -d '\r' | awk '{$1=$1} NF')"
             export IMAGES="$images_input"
           fi
 
