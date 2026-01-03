@@ -1,0 +1,71 @@
+name: SyncMind - Mirror compose images to Alibaba ACR
+
+on:
+  workflow_dispatch:
+    inputs:
+      images:
+        description: "Optional: comma or newline separated list of source images to mirror (e.g. redis:6-alpine,ubuntu/squid:latest). Leave empty to mirror all images from docker/docker-compose.yaml"
+        required: false
+        default: ""
+      method:
+        description: "Copy method (skopeo uses less disk; docker uses docker pull/tag/push)"
+        required: false
+        default: "skopeo"
+        type: choice
+        options:
+          - skopeo
+          - docker
+
+permissions:
+  contents: read
+
+env:
+  ACR_REGISTRY: crpi-2e30x3ttfmqmx83q.cn-chengdu.personal.cr.aliyuncs.com
+  ACR_NAMESPACE: dify-vision
+
+jobs:
+  mirror:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install skopeo (method=skopeo)
+        if: ${{ inputs.method == 'skopeo' }}
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y skopeo
+
+      - name: Login to Alibaba ACR (docker)
+        if: ${{ inputs.method == 'docker' }}
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.ACR_REGISTRY }}
+          username: ${{ secrets.ALIYUN_ACR_USERNAME }}
+          password: ${{ secrets.ALIYUN_ACR_PASSWORD }}
+
+      - name: Login to Alibaba ACR (skopeo)
+        if: ${{ inputs.method == 'skopeo' }}
+        run: |
+          skopeo login \
+            --username "${{ secrets.ALIYUN_ACR_USERNAME }}" \
+            --password "${{ secrets.ALIYUN_ACR_PASSWORD }}" \
+            "${{ env.ACR_REGISTRY }}"
+
+      - name: Mirror images
+        env:
+          REGISTRY: ${{ env.ACR_REGISTRY }}
+          NAMESPACE: ${{ env.ACR_NAMESPACE }}
+          PLATFORM: linux/amd64
+          METHOD: ${{ inputs.method }}
+        run: |
+          chmod +x syncmind/scripts/list-compose-images.sh syncmind/scripts/mirror-compose-images.sh
+
+          images_input='${{ inputs.images }}'
+          if [[ -n "$images_input" ]]; then
+            # Accept comma-separated or newline-separated lists.
+            images_input="${images_input//,/\n}"
+            export IMAGES="$images_input"
+          fi
+
+          ./syncmind/scripts/mirror-compose-images.sh
