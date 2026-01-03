@@ -44,7 +44,12 @@ mirror_ref() {
     name="${ref_no_digest%:*}"
   fi
 
-  printf '%s/%s/%s:%s' "$REGISTRY" "$NAMESPACE" "$name" "$tag"
+  # Alibaba ACR repositories under a namespace cannot contain additional slashes.
+  # Flatten upstream names like "certbot/certbot" to "certbot".
+  local repo
+  repo="${name##*/}"
+
+  printf '%s/%s/%s:%s' "$REGISTRY" "$NAMESPACE" "$repo" "$tag"
 }
 
 cd "$root_dir"
