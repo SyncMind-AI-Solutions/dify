@@ -30,6 +30,8 @@ Example:
 
 Workflow: `.github/workflows/syncmind-push-acr.yml`
 
+Mirror workflow (recommended for dependency images): `.github/workflows/syncmind-mirror-acr.yml`
+
 Required GitHub secrets:
 
 - `ALIYUN_ACR_USERNAME`
@@ -57,4 +59,16 @@ docker login crpi-2e30x3ttfmqmx83q.cn-chengdu.personal.cr.aliyuncs.com
 
 ```sh
 ./syncmind/scripts/mirror-compose-images.sh
+```
+
+4) Mirror only selected images (reduce runner disk usage / retries):
+
+```sh
+./syncmind/scripts/mirror-compose-images.sh --image redis:6-alpine --image ubuntu/squid:latest
+```
+
+### Notes
+
+- The mirror workflow defaults to `skopeo` (streaming copy) to reduce disk usage on GitHub runners.
+- You can also pass `images` to the mirror workflow input (comma or newline separated).
 ```
