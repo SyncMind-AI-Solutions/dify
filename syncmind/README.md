@@ -41,6 +41,24 @@ Trigger:
 
 - Manual only (`workflow_dispatch`).
 
+## Deploy on Alibaba ECS (ACR-only pulls)
+
+1) Mirror dependency images (run GitHub workflow: `.github/workflows/syncmind-mirror-acr.yml`).
+
+2) Build/push `dify-api:latest` and `dify-web:latest` (run GitHub workflow: `.github/workflows/syncmind-push-acr.yml`).
+
+3) On the ECS instance, deploy using the base compose plus the ACR override:
+
+```sh
+docker login crpi-2e30x3ttfmqmx83q.cn-chengdu.personal.cr.aliyuncs.com
+docker compose \
+	-f docker/docker-compose.yaml \
+	-f syncmind/docker-compose.acr.override.yaml \
+	up -d
+```
+
+The override file `syncmind/docker-compose.acr.override.yaml` rewrites all `image:` references from `docker/docker-compose.yaml` to ACR, using the flattened repo naming required by Alibaba ACR.
+
 ### Local push (optional)
 
 1) Login:
