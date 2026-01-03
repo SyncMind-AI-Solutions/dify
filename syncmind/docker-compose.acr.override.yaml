@@ -1,0 +1,74 @@
+# ==================================================================
+# SyncMind override: use Alibaba ACR images (flattened repo names)
+# Apply with: docker compose -f docker/docker-compose.yaml -f syncmind/docker-compose.acr.override.yaml up -d
+# ==================================================================
+
+services:
+  init_permissions:
+    image: crpi-2e30x3ttfmqmx83q.cn-chengdu.personal.cr.aliyuncs.com/dify-vision/busybox:latest
+  api:
+    image: crpi-2e30x3ttfmqmx83q.cn-chengdu.personal.cr.aliyuncs.com/dify-vision/dify-api:latest
+  worker:
+    image: crpi-2e30x3ttfmqmx83q.cn-chengdu.personal.cr.aliyuncs.com/dify-vision/dify-api:latest
+  worker_beat:
+    image: crpi-2e30x3ttfmqmx83q.cn-chengdu.personal.cr.aliyuncs.com/dify-vision/dify-api:latest
+  web:
+    image: crpi-2e30x3ttfmqmx83q.cn-chengdu.personal.cr.aliyuncs.com/dify-vision/dify-web:latest
+  db_postgres:
+    image: crpi-2e30x3ttfmqmx83q.cn-chengdu.personal.cr.aliyuncs.com/dify-vision/postgres:15-alpine
+  db_mysql:
+    image: crpi-2e30x3ttfmqmx83q.cn-chengdu.personal.cr.aliyuncs.com/dify-vision/mysql:8.0
+  redis:
+    image: crpi-2e30x3ttfmqmx83q.cn-chengdu.personal.cr.aliyuncs.com/dify-vision/redis:6-alpine
+  sandbox:
+    image: crpi-2e30x3ttfmqmx83q.cn-chengdu.personal.cr.aliyuncs.com/dify-vision/dify-sandbox:0.2.12
+  plugin_daemon:
+    image: crpi-2e30x3ttfmqmx83q.cn-chengdu.personal.cr.aliyuncs.com/dify-vision/dify-plugin-daemon:0.5.2-local
+  ssrf_proxy:
+    image: crpi-2e30x3ttfmqmx83q.cn-chengdu.personal.cr.aliyuncs.com/dify-vision/squid:latest
+  certbot:
+    image: crpi-2e30x3ttfmqmx83q.cn-chengdu.personal.cr.aliyuncs.com/dify-vision/certbot:latest
+  nginx:
+    image: crpi-2e30x3ttfmqmx83q.cn-chengdu.personal.cr.aliyuncs.com/dify-vision/nginx:latest
+  weaviate:
+    image: crpi-2e30x3ttfmqmx83q.cn-chengdu.personal.cr.aliyuncs.com/dify-vision/weaviate:1.27.0
+  oceanbase:
+    image: crpi-2e30x3ttfmqmx83q.cn-chengdu.personal.cr.aliyuncs.com/dify-vision/oceanbase-ce:4.3.5-lts
+  seekdb:
+    image: crpi-2e30x3ttfmqmx83q.cn-chengdu.personal.cr.aliyuncs.com/dify-vision/seekdb:latest
+  qdrant:
+    image: crpi-2e30x3ttfmqmx83q.cn-chengdu.personal.cr.aliyuncs.com/dify-vision/qdrant:v1.8.3
+  pgvector:
+    image: crpi-2e30x3ttfmqmx83q.cn-chengdu.personal.cr.aliyuncs.com/dify-vision/pgvector:pg16
+  vastbase:
+    image: crpi-2e30x3ttfmqmx83q.cn-chengdu.personal.cr.aliyuncs.com/dify-vision/vastbase-vector:latest
+  pgvecto-rs:
+    image: crpi-2e30x3ttfmqmx83q.cn-chengdu.personal.cr.aliyuncs.com/dify-vision/pgvecto-rs:pg16-v0.3.0
+  chroma:
+    image: crpi-2e30x3ttfmqmx83q.cn-chengdu.personal.cr.aliyuncs.com/dify-vision/chroma:0.5.20
+  iris:
+    image: crpi-2e30x3ttfmqmx83q.cn-chengdu.personal.cr.aliyuncs.com/dify-vision/iris-community:2025.3
+  oracle:
+    image: crpi-2e30x3ttfmqmx83q.cn-chengdu.personal.cr.aliyuncs.com/dify-vision/free:latest
+  etcd:
+    image: crpi-2e30x3ttfmqmx83q.cn-chengdu.personal.cr.aliyuncs.com/dify-vision/etcd:v3.5.5
+  minio:
+    image: crpi-2e30x3ttfmqmx83q.cn-chengdu.personal.cr.aliyuncs.com/dify-vision/minio:RELEASE.2023-03-20T20-16-18Z
+  milvus-standalone:
+    image: crpi-2e30x3ttfmqmx83q.cn-chengdu.personal.cr.aliyuncs.com/dify-vision/milvus:v2.6.3
+  opensearch:
+    image: crpi-2e30x3ttfmqmx83q.cn-chengdu.personal.cr.aliyuncs.com/dify-vision/opensearch:latest
+  opensearch-dashboards:
+    image: crpi-2e30x3ttfmqmx83q.cn-chengdu.personal.cr.aliyuncs.com/dify-vision/opensearch-dashboards:latest
+  opengauss:
+    image: crpi-2e30x3ttfmqmx83q.cn-chengdu.personal.cr.aliyuncs.com/dify-vision/opengauss:7.0.0-RC1
+  myscale:
+    image: crpi-2e30x3ttfmqmx83q.cn-chengdu.personal.cr.aliyuncs.com/dify-vision/myscaledb:1.6.4
+  matrixone:
+    image: crpi-2e30x3ttfmqmx83q.cn-chengdu.personal.cr.aliyuncs.com/dify-vision/matrixone:2.1.1
+  elasticsearch:
+    image: crpi-2e30x3ttfmqmx83q.cn-chengdu.personal.cr.aliyuncs.com/dify-vision/elasticsearch:8.14.3
+  kibana:
+    image: crpi-2e30x3ttfmqmx83q.cn-chengdu.personal.cr.aliyuncs.com/dify-vision/kibana:8.14.3
+  unstructured:
+    image: crpi-2e30x3ttfmqmx83q.cn-chengdu.personal.cr.aliyuncs.com/dify-vision/unstructured-api:latest
