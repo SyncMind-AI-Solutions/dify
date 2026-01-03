@@ -16,12 +16,15 @@ Published images (x86 only):
 
 Mirrored upstream images used by `docker/docker-compose.yaml` (so ECS does not need `docker.io`) are pushed under:
 
-- `crpi-2e30x3ttfmqmx83q.cn-chengdu.personal.cr.aliyuncs.com/dify-vision/<original_repo>:<original_tag>`
+- `crpi-2e30x3ttfmqmx83q.cn-chengdu.personal.cr.aliyuncs.com/dify-vision/<flattened_repo>:<original_tag>`
+
+Note: Alibaba ACR repositories under a namespace cannot contain extra `/`. The workflow flattens upstream image names to the last path segment.
 
 Example:
 
 - `redis:6-alpine` -> `crpi-2e30x3ttfmqmx83q.cn-chengdu.personal.cr.aliyuncs.com/dify-vision/redis:6-alpine`
 - `ubuntu/squid:latest` -> `crpi-2e30x3ttfmqmx83q.cn-chengdu.personal.cr.aliyuncs.com/dify-vision/ubuntu/squid:latest`
+- `certbot/certbot` -> `crpi-2e30x3ttfmqmx83q.cn-chengdu.personal.cr.aliyuncs.com/dify-vision/certbot:latest`
 
 ### GitHub Actions
 
