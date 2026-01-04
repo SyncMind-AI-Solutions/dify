@@ -8,10 +8,22 @@ services:
     image: crpi-2e30x3ttfmqmx83q.cn-chengdu.personal.cr.aliyuncs.com/dify-vision/busybox:latest
   api:
     image: crpi-2e30x3ttfmqmx83q.cn-chengdu.personal.cr.aliyuncs.com/dify-vision/dify-api:latest
+    networks:
+      - default
+      - ssrf_proxy_network
+      - milvus
   worker:
     image: crpi-2e30x3ttfmqmx83q.cn-chengdu.personal.cr.aliyuncs.com/dify-vision/dify-api:latest
+    networks:
+      - default
+      - ssrf_proxy_network
+      - milvus
   worker_beat:
     image: crpi-2e30x3ttfmqmx83q.cn-chengdu.personal.cr.aliyuncs.com/dify-vision/dify-api:latest
+    networks:
+      - default
+      - ssrf_proxy_network
+      - milvus
   web:
     image: crpi-2e30x3ttfmqmx83q.cn-chengdu.personal.cr.aliyuncs.com/dify-vision/dify-web:latest
   db_postgres:
