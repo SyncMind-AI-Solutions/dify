@@ -56,11 +56,11 @@ if [ "${NGINX_HTTPS_ENABLED}" = "true" ]; then
 fi
 export HTTP_REDIRECT_SERVER
 
-env_vars=$(printenv | cut -d= -f1 | sed 's/^/$/g' | paste -sd, -)
+# Only substitute known env vars. Do NOT substitute nginx runtime variables like $host, $scheme, etc.
+env_vars='${NGINX_SERVER_NAME},${NGINX_HTTPS_ENABLED},${NGINX_PORT},${NGINX_SSL_PORT},${NGINX_SSL_CERT_FILENAME},${NGINX_SSL_CERT_KEY_FILENAME},${NGINX_SSL_PROTOCOLS},${NGINX_WORKER_PROCESSES},${NGINX_CLIENT_MAX_BODY_SIZE},${NGINX_KEEPALIVE_TIMEOUT},${NGINX_PROXY_READ_TIMEOUT},${NGINX_PROXY_SEND_TIMEOUT},${NGINX_ENABLE_CERTBOT_CHALLENGE},${CERTBOT_DOMAIN},${CERTBOT_EMAIL},${CERTBOT_OPTIONS},${HTTPS_CONFIG},${ACME_CHALLENGE_LOCATION},${HTTP_REDIRECT_SERVER},${HTTP_LISTEN},${SSL_CERTIFICATE_PATH},${SSL_CERTIFICATE_KEY_PATH}'
 
 envsubst "$env_vars" < /etc/nginx/nginx.conf.template > /etc/nginx/nginx.conf
 envsubst "$env_vars" < /etc/nginx/proxy.conf.template > /etc/nginx/proxy.conf
-
 envsubst "$env_vars" < /etc/nginx/conf.d/default.conf.template > /etc/nginx/conf.d/default.conf
 
 # Start Nginx using the default entrypoint
