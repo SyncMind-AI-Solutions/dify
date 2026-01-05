@@ -59,6 +59,10 @@ docker compose \
 
 The override file `syncmind/docker-compose.acr.override.yaml` rewrites all `image:` references from `docker/docker-compose.yaml` to ACR, using the flattened repo naming required by Alibaba ACR.
 
+## HTTPS / Certbot
+
+See `syncmind/CERTBOT_RENEWAL.md` for how HTTPS is set up (nginx + certbot profile) and how to renew the certificate.
+
 ### Local push (optional)
 
 1) Login:
