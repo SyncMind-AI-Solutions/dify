@@ -8,6 +8,7 @@ This documents how Dify’s `docker/docker-compose.yaml` is set up to use Let’
 - `certbot` (profile: `certbot`) writes certs to `docker/volumes/certbot/conf`.
 - `nginx` mounts certs from `docker/volumes/certbot/conf/live`.
 - For Let’s Encrypt HTTP-01, nginx must serve `/.well-known/acme-challenge/*` from `docker/volumes/certbot/www`.
+- To reduce “direct IP” access, nginx also runs a catch-all `default_server` that drops requests whose `Host`/SNI does not match `NGINX_SERVER_NAME`.
 
 ## Required `.env` settings
 
@@ -33,6 +34,7 @@ NGINX_SSL_CERT_KEY_FILENAME=privkey.pem
 With the repo’s nginx templates:
 - When `NGINX_HTTPS_ENABLED=true`, nginx serves HTTPS on `443` and redirects normal HTTP traffic on `80` to HTTPS.
 - When `NGINX_ENABLE_CERTBOT_CHALLENGE=true`, nginx will still serve `/.well-known/acme-challenge/*` on HTTP for certbot.
+- Requests to the ECS public IP (or any other unknown `Host`) are dropped by nginx’s catch-all server.
 
 Notes:
 - `fullchain.pem` and `privkey.pem` are the standard certbot/Let’s Encrypt filenames.
