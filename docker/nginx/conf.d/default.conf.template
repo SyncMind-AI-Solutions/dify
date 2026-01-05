@@ -1,8 +1,11 @@
 # Please do not directly edit this file. Instead, modify the .env variables related to NGINX configuration.
 
+# placeholder for HTTP redirect server (defined in docker-entrypoint.sh)
+${HTTP_REDIRECT_SERVER}
+
 server {
-    listen ${NGINX_PORT};
-    server_name ${NGINX_SERVER_NAME};
+  ${HTTP_LISTEN}
+  server_name ${NGINX_SERVER_NAME};
 
     location /console/api {
       proxy_pass http://api:5001;
